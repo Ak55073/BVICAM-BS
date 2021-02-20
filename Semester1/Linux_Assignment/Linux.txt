@@ -40,4 +40,3 @@ cat > Test
 Hello how are you?
 cp Navneet elephant
 cp Navneet Test
-Thank you for your hard work abhinav ;)
