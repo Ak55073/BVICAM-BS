@@ -1,0 +1,42 @@
+cal
+date
+clear
+cal -A4(4 months from the current month)
+cal -B4(4 months before the current month)
+date +%m
+date +%h
+date +"%m %h"
+date +%d
+SHELL
+man echo
+echo "Hello"
+x = 10
+echo $x
+echo "the value of x ="$x
+bc
+12/5
+scale=2
+ctrl + d
+who
+whoami
+which
+uname
+uname -r
+uname -n
+hostname
+pwd
+ls
+mkdir a
+mkdir c d e e/e1 e/e2
+cd 
+rmdir e/e2 e/e1 e
+mv e elephant
+ls ./elephant
+ls -l
+ls -r
+tty
+cat 
+cat > Test 
+Hello how are you?
+cp Navneet elephant
+cp Navneet Test

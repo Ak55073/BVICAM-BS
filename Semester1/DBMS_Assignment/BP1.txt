@@ -1,0 +1,137 @@
+drop TABLE Employee CASCADE CONSTRAINTS;
+CREATE TABLE Employee (  
+    EID varchar(8) PRIMARY KEY,  
+    Ename varchar(16) NOT NULL ,  
+    Address varchar(16),  
+    DateOfJoining DATE,  
+    Department varchar(16)
+);
+
+drop TABLE ProjectN CASCADE CONSTRAINTS;
+CREATE TABLE ProjectN (  
+    PID varchar(8) PRIMARY KEY,  
+    PName varchar(16),  
+    StartDate DATE,   
+    TerminationDate DATE 
+);
+
+drop TABLE AssignedTo CASCADE CONSTRAINTS;
+CREATE TABLE AssignedTo (  
+	EID varchar(8) references Employee(EID), 
+    PID varchar(8) references ProjectN(PID),  
+	Primary key(EId,PId)
+);
+
+INSERT INTO Employee VALUES(
+'1', 'Sam', 'Delhi', '31-MAR-21', 'Accounting');
+INSERT INTO Employee VALUES(
+'2', 'Max', 'MP', '02-JAN-22', 'CSE');
+INSERT INTO Employee VALUES(
+'3', 'Rahul', 'Delhi', '31-MAR-21', 'Teaching');
+INSERT INTO Employee VALUES(
+'4', 'Sam Welles', 'Delhi', '30-APR-21', 'Accounting');
+INSERT INTO Employee VALUES(
+'5', 'John', 'MP', '09-JAN-22', 'Teaching');
+INSERT INTO Employee VALUES(
+'6', 'Deadeye', 'MP', '23-JAN-21', 'Part Time');
+
+INSERT INTO ProjectN VALUES(
+'1', 'Banking', '01-APR-17', '31-MAR-23');
+INSERT INTO ProjectN VALUES(
+'2', 'University', '01-APR-20', '31-MAR-21');
+INSERT INTO ProjectN VALUES(
+'3', 'ShareMarket', '01-APR-16', '31-MAR-15');
+INSERT INTO ProjectN VALUES(
+'4', 'School', '01-APR-21', '31-MAR-23');
+
+INSERT INTO AssignedTo VALUES(
+'1', '1');
+INSERT INTO AssignedTo VALUES(
+'1', '2');
+INSERT INTO AssignedTo VALUES(
+'1', '3');
+INSERT INTO AssignedTo VALUES(
+'1', '4');
+INSERT INTO AssignedTo VALUES(
+'2', '2');
+INSERT INTO AssignedTo VALUES(
+'3', '2');
+INSERT INTO AssignedTo VALUES(
+'4', '1');
+INSERT INTO AssignedTo VALUES(
+'5', '4');
+
+select * from Employee;
+select * from ProjectN;
+select * from AssignedTo;
+
+Select 
+    Emp.EName
+From
+    Employee Emp
+JOIN AssignedTo Assign on Emp.EID = Assign.EID
+JOIN ProjectN Proj on Proj.PID = Assign.PID
+where Proj.Pname = 'Banking';
+
+Select 
+    Emp.Ename,
+    Proj.Pname
+from 
+    Employee Emp
+Join AssignedTo Assign on Emp.EID = Assign.EID
+Join ProjectN Proj on Proj.PID = Assign.PID
+where Emp.Ename = 'Max' OR Emp.Ename = 'Sam Welles';
+
+Select 
+    Emp.Ename,
+    Proj.Pname,
+    Emp.Address
+from 
+    Employee Emp
+Join AssignedTo Assign on Emp.EID = Assign.EID
+Join ProjectN Proj on Proj.PID = Assign.PID
+where Emp.Address = 'Delhi' AND (Proj.Pname = 'University' OR Proj.Pname = 'ShareMarket');
+
+Select 
+    Emp.Ename,
+    Proj.Pname
+from 
+    Employee Emp
+Join AssignedTo Assign on Emp.EID = Assign.EID
+Join ProjectN Proj on Proj.PID = Assign.PID
+where Proj.Pname <> 'University';
+
+Select 
+    Emp.EName
+from 
+    Employee Emp
+Join AssignedTo Assign on Emp.EID = Assign.EID
+Join ProjectN Proj on Proj.PID = Assign.PID
+GROUP BY Emp.EName
+having count(Emp.EName) = (select count(*) from ProjectN);
+
+Select 
+    *
+from 
+    Employee Emp
+Left Join AssignedTo Assign on Emp.EID = Assign.EID
+WHERE Assign.PID IS NULL;
+
+Select 
+    Emp.Ename
+from 
+    Employee Emp
+Join AssignedTo Assign on Emp.EID = Assign.EID
+Join ProjectN Proj on Proj.PID = Assign.PID
+where Emp.DATEOFJOINING > (select STARTDATE from ProjectN where PName='Banking')
+Group BY (Emp.Ename);
+
+Select 
+    Proj.PName,
+    Proj.StartDate,
+    Proj.TerminationDate
+from 
+    ProjectN Proj
+Join AssignedTo Assign on Proj.PID = Assign.PID
+Join Employee Emp on Emp.EID = Assign.EID
+where Emp.EName = 'Sam';

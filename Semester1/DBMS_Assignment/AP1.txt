@@ -1,0 +1,100 @@
+drop TABLE Book;
+
+CREATE TABLE Book (  
+    Book_Code varchar(5) PRIMARY KEY,  
+    ISBN_No varchar(8) NOT NULL ,  
+    Book_Name varchar(8) UNIQUE,  
+    Publisher varchar(26),  
+    Price int,  
+    CHECK (Price>=100),  
+    Author_Name varchar(20),  
+    Data_of_Launch DATE  
+);
+
+INSERT INTO Book VALUES(  
+'1', '234', 'COTR', 'BPB', 5000, 'Yashwant Kanetkar', '31-MAR-16');
+INSERT INTO Book VALUES(  
+'2', '234', 'Witcher', 'BPB' , 5000, 'TNT', '31-MAR-16');
+INSERT INTO Book VALUES(  
+'3', '234', 'Hul', 'TMH', 5000, 'Abhinav', '31-MAR-16');
+INSERT INTO Book VALUES(  
+'4', '234', 'Garvel', 'TMH', 5000, 'Robert Lafore', '31-MAR-16');
+INSERT INTO Book VALUES(  
+'5', '234', 'Keath', 'Pearson Education', 7000, 'Abhinav', '31-MAR-16');
+INSERT INTO Book VALUES(  
+'6', '234', 'Joy', 'Education Ty', 7000, 'AK', '21-FEB-16');
+
+ALTER TABLE Book MODIFY(Book_Name varchar(12));
+
+select sum(price) from Book
+where Publisher='TMH';
+
+select * from Book
+where Author_Name='Yashwant Kanetkar' or Author_Name='Robert Lafore';
+
+DELETE from Book where Publisher='PHI';
+select * from Book;
+
+UPDATE Book 
+SET Price = (Price + (Price*0.05))
+where Publisher='BPB';
+select * from Book;
+
+drop TABLE Author;
+
+CREATE TABLE Author (  
+    AuthorID varchar(5) PRIMARY KEY,
+	Author_Name varchar(20),
+    Subject varchar(8), 
+	Contact varchar(10), 
+    Research_Area varchar(16)
+);
+
+INSERT INTO Author VALUES(  
+'1', 'Abhinav', 'JAVA', 'xxxxx098', 'Applet');
+INSERT INTO Author VALUES(  
+'2', 'Joydeep', 'JAVA', 'xxxxx598', 'Web Mining');
+INSERT INTO Author VALUES(  
+'3', 'TKWS', 'JAVA', 'xxxxx558', 'Web Technology');
+INSERT INTO Author VALUES(  
+'4', 'Vijay', 'OS', 'xxxxx355', 'Kernal');
+INSERT INTO Author VALUES(  
+'5', 'Himanshu', 'Python', 'xxxxx255', 'Networking');
+select * from Author
+where Research_Area = 'Web Technology';
+
+ALTER TABLE Book ADD (AuthorID varchar(5));
+ALTER TABLE Book ADD
+FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID);
+
+UPDATE Book 
+SET AuthorID = 1 
+WHERE Book_Code = 1;
+UPDATE Book 
+SET AuthorID = 2 
+WHERE Book_Code = 2;
+UPDATE Book 
+SET AuthorID = 3 
+WHERE Book_Code = 3;
+UPDATE Book 
+SET AuthorID = 4 
+WHERE Book_Code = 4;
+UPDATE Book 
+SET AuthorID = 5 
+WHERE Book_Code = 5;
+
+select * from Book;
+
+select * from Book
+where Book_Name LIKE 'C%' or Book_Name LIKE 'G%' or Book_Name LIKE 'K%';
+
+CREATE VIEW Book_View2 AS
+SELECT
+    Book_Name,
+    Book_Code,
+    Price
+FROM
+    Book
+WHERE
+    Publisher='Pearson Education';
+select * from Book_View2;

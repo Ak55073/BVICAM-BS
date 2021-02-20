@@ -1,0 +1,114 @@
+drop TABLE Student;
+
+CREATE TABLE Student (  
+    Roll_No NUMBER(2) PRIMARY KEY, 
+    Student_Name varchar2(20) NOT NULL,
+    Address varchar2(50),
+    City varchar2(30),
+    Marks_Sub1 NUMBER(5,2), CHECK (Marks_Sub1>=0 AND Marks_Sub1<=100),
+    Marks_Sub2 NUMBER(5,2), CHECK (Marks_Sub2>=0 AND Marks_Sub2<=100),
+    Marks_Sub3 NUMBER(5,2), CHECK (Marks_Sub3>=0 AND Marks_Sub3<=100),
+    Total NUMBER(5,2), CHECK (Total>=0 AND Total<=300)
+);
+
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(2, 'Abhinav', 'Rohini', 'Delhi', 99.9, 99.9, 99.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(3, 'Vidhan', 'Sector 2', 'Delhi', 89.9, 89.9, 89.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(1, 'Joydeep', 'Sector 6', 'Mumbai', 100, 100, 100);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(4, 'Rahul', 'CWC', 'Mumbai', 9.9, 9.9, 9.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(5, 'TK', 'SSC', 'Korba', 79.9, 79.9, 79.9);
+UPDATE Student
+SET Total = (Marks_Sub1 + Marks_Sub2 + Marks_Sub3);
+select * from Student;
+
+CREATE SEQUENCE Roll_No
+INCREMENT BY 1
+START WITH 6;
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(Roll_No.NEXTVAL, 'Adam', 'SSC', 'Korba', 67.9, 35, 36.9);
+select * from Student;
+
+DROP VIEW Student_View;
+CREATE VIEW Student_View AS
+SELECT
+    Roll_No,
+	UPPER(Student_Name) as Std_Name,
+	Marks_Sub1,
+	Marks_Sub2,
+	Marks_Sub3,
+	(Total/3) as Percentage
+FROM
+    Student;
+select * from Student_View;
+
+DROP VIEW Student_View2;
+CREATE VIEW Student_View2 AS
+SELECT
+    Roll_No,
+	Student_Name,
+	Total
+FROM
+    Student;
+select * from Student_View2;
+
+DROP VIEW Student_View3;
+CREATE VIEW Student_View3 AS
+SELECT
+    Roll_No,
+	Student_Name,
+	Total
+FROM
+    Student
+WHERE
+    City='Delhi';
+select * from Student_View3;
+
+drop TABLE Scholar;
+CREATE TABLE Scholar (  
+    Roll_No NUMBER(2) PRIMARY KEY, 
+    Student_Name varchar2(20) NOT NULL,
+    Address varchar2(50),
+    City varchar2(30),
+    Marks_Sub1 NUMBER(5,2), CHECK (Marks_Sub1>=0 AND Marks_Sub1<=100),
+    Marks_Sub2 NUMBER(5,2), CHECK (Marks_Sub2>=0 AND Marks_Sub2<=100),
+    Marks_Sub3 NUMBER(5,2), CHECK (Marks_Sub3>=0 AND Marks_Sub3<=100),
+    Total NUMBER(5,2), CHECK (Total>=0 AND Total<=300)
+);
+
+
+
+INSERT INTO Scholar (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(22, 'Max', 'Rohini', 'Delhi', 99.9, 99.9, 99.9);
+INSERT INTO Scholar (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(23, 'Kelly', 'Sector 2', 'Delhi', 89.9, 89.9, 89.9);
+INSERT INTO Scholar (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(21, 'Virgil', 'Sector 6', 'Mumbai', 100, 100, 100);
+INSERT INTO Scholar (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(24, 'Dante', 'CWC', 'Mumbai', 9.9, 9.9, 9.9);
+INSERT INTO Scholar (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(25, 'Roman', 'SSC', 'Korba', 79.9, 79.9, 79.9);
+UPDATE Scholar
+SET Total = (Marks_Sub1 + Marks_Sub2 + Marks_Sub3);
+select * from Scholar;
+
+
+INSERT INTO student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(25, 'Roman', 'SSC', 'Korba', 79.9, 79.9, 79.9);
+UPDATE student
+SET Total = (Marks_Sub1 + Marks_Sub2 + Marks_Sub3)
+
+SELECT * FROM student
+UNION 
+SELECT * FROM scholar;
+
+SELECT * FROM student
+INTERSECT 
+SELECT * FROM scholar;
+
+SELECT * FROM scholar
+minus
+SELECT * FROM student;

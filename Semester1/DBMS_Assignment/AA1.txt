@@ -1,0 +1,98 @@
+drop TABLE Student;
+
+CREATE TABLE Student (  
+    Roll_No NUMBER(2) PRIMARY KEY, 
+    Student_Name varchar2(20) NOT NULL,
+    Address varchar2(50),
+    City varchar2(30),
+    Marks_Sub1 NUMBER(5,2), CHECK (Marks_Sub1>=0 AND Marks_Sub1<=100),
+    Marks_Sub2 NUMBER(5,2), CHECK (Marks_Sub2>=0 AND Marks_Sub2<=100),
+    Marks_Sub3 NUMBER(5,2), CHECK (Marks_Sub3>=0 AND Marks_Sub3<=100),
+    Total NUMBER(5,2), CHECK (Total>=0 AND Total<=300)
+);
+
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(2, 'Abhinav', 'Rohini', 'Delhi', 99.9, 99.9, 99.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(3, 'Vidhan', 'Sector 2', 'Delhi', 89.9, 89.9, 89.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(1, 'Joydeep', 'Sector 6', 'Mumbai', 100, 100, 100);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(4, 'Rahul', 'CWC', 'Mumbai', 9.9, 9.9, 9.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(5, 'TK', 'SSC', 'Korba', 79.9, 79.9, 79.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(12, 'Max', 'Rohini', 'Delhi', 65.9, 46.9, 34.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(13, 'Kelly', 'Sector 2', 'Delhi', 23.9, 41.9, 14.9);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(11, 'Virgil', 'Sector 6', 'Mumbai', 96, 40, 100);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(14, 'Dante', 'CWC', 'Mumbai', 54, 38, 50);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(15, 'Roman', 'SSC', 'Korba', 35, 83, 78);
+select * from Student;
+
+DROP VIEW Student_View;
+
+CREATE VIEW Student_View AS
+SELECT
+    Roll_No,
+	Student_Name,
+	Total
+FROM
+    Student
+WHERE
+    City='Delhi';
+select * from Student_View;
+
+UPDATE Student
+SET Total = (Marks_Sub1 + Marks_Sub2 + Marks_Sub3);
+select * from Student;
+
+select * from Student
+where Total=(select MAX(Total) from Student);
+
+select * from Student
+where Total>(select Total from Student where Student_Name='Roman');
+
+select Student_Name,((TOTAL/300)*100) AS Percentage from Student;
+
+select * from Student
+where Marks_Sub1=(select MAX(Marks_Sub1) from Student where (Marks_Sub2>50 and Marks_Sub3>50));
+
+UPDATE Student
+SET Marks_Sub1 = (Marks_Sub1 + 5)
+where Marks_Sub1<40;
+UPDATE Student
+SET Marks_Sub2 = (Marks_Sub2 + 5)
+where Marks_Sub2<40;
+UPDATE Student
+SET Marks_Sub3 = (Marks_Sub3 + 5)
+where Marks_Sub3<40;
+UPDATE Student
+SET Total = (Marks_Sub1 + Marks_Sub2 + Marks_Sub3);
+select * from Student;
+
+DELETE from Student
+where Total=(select MIN(Total) from Student);
+select * from Student;
+
+select * from Student
+where Total=(select MAX(Total) from Student where Total!=(select MAX(Total) from Student));
+
+select City,AVG(Total) from student
+where City != 'Korba'
+GROUP BY City;
+
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(31, 'Virgil', 'Sector 6', 'Mumbai', 96, 40, 100);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(32, 'Dante', 'CWC', 'Mumbai', 24, 24, 26);
+INSERT INTO Student (Roll_No, Student_Name, Address, City, Marks_Sub1, Marks_Sub2, Marks_Sub3)
+VALUES(33, 'Roman', 'SSC', 'Korba', 35, 83, 78);
+UPDATE Student
+SET Total = (Marks_Sub1 + Marks_Sub2 + Marks_Sub3);
+
+select Roll_No from Student
+Where Roll_No<30 and Total>=(select MIN(Total) from Student Where Roll_No>30);
