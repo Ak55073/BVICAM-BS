@@ -2,21 +2,21 @@
 
 ## JAVA Assignment
 ### Required 
--> Notepad++
--> JAVA SDK - Minimum 8.0
+-> Notepad++ (https://notepad-plus-plus.org/downloads/) <br />
+-> JAVA JDK - Minimum 8.0 (https://www.oracle.com/in/java/technologies/javase-downloads.html) <br />
 ### Commands
--> javac <filename>.java
--> java <filename> [List of arguments, separated by space]
+-> javac <filename>.java <br />
+-> java <filename> [List of arguments, separated by space] <br />
 
 
 ## CN Assignment
 ### Required 
--> Cisco Packet Tracer
+-> Cisco Packet Tracer (https://www.netacad.com/courses/packet-tracer) <br />
 
 ## DBMS Assignment
 ### Required 
--> Oracle Engine
+-> Oracle Engine (https://livesql.oracle.com/apex/) <br />
 
 ## Linux Assignment
 ### Required 
--> Ubuntu OS
+-> Ubuntu OS <br />
