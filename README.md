@@ -20,3 +20,6 @@
 ## Linux Assignment
 ### Required 
 -> Ubuntu OS <br />
+
+Discord Server
+https://discord.gg/gG2hjkavQ6
