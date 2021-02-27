@@ -1,0 +1,97 @@
+drop TABLE STUDENT CASCADE CONSTRAINTS;
+CREATE TABLE STUDENT(  
+    RollNo NUMBER(8) PRIMARY KEY,  
+    SName varchar(16),  
+    City varchar(16),  
+    Age int,  
+    Gender varchar(6)
+);
+
+drop TABLE Course CASCADE CONSTRAINTS;
+CREATE TABLE Course (  
+    CID NUMBER(8) PRIMARY KEY,  
+    CName varchar(16), 
+	Semester Number(1),
+	Credit NUMBER(2),
+	Fee int
+);
+
+drop TABLE Enrollment CASCADE CONSTRAINTS;
+CREATE TABLE Enrollment (  
+	RollNo NUMBER(8) references STUDENT(RollNo), 
+    CID NUMBER(8) references Course(CID),
+	DateOfReg Date,
+	Primary key(RollNo,CID)
+);
+
+INSERT INTO STUDENT VALUES(
+1, 'Sam', 'Delhi', 18, 'Male');
+INSERT INTO STUDENT VALUES(
+2, 'Lisa', 'LA', 16, 'Female');
+INSERT INTO STUDENT VALUES(
+3, 'Rahul', 'Night City', 17, 'Male');
+INSERT INTO STUDENT VALUES(
+4, 'Anita', 'Delhi', 18, 'Female');
+INSERT INTO STUDENT VALUES(
+5, 'Kunal', 'LA', 17, 'Male');
+INSERT INTO STUDENT VALUES(
+6, 'Linda', 'LA', 18, 'Female');
+
+INSERT INTO Course VALUES(
+1, 'MCA', 5, 5, 50000);
+INSERT INTO Course VALUES(
+2, 'MBA', 4, 4, 4000);
+INSERT INTO Course VALUES(
+3, 'BCA', 2, 4, 4000);
+INSERT INTO Course VALUES(
+4, 'LLB', 3, 3, 3000);
+
+INSERT INTO Enrollment VALUES(
+1, 1, '1-JAN-2020');
+INSERT INTO Enrollment VALUES(
+2, 2, '1-MAR-2020');
+INSERT INTO Enrollment VALUES(
+3, 2, '1-SEP-2020');
+INSERT INTO Enrollment VALUES(
+4, 1, '1-SEP-2020');
+INSERT INTO Enrollment VALUES(
+5, 4, '1-JAN-2020');
+INSERT INTO Enrollment VALUES(
+6, 1, '1-NOV-2020');
+
+select * from STUDENT;
+select * from Course;
+select * from Enrollment;
+
+Select STD.RollNo,STD.SName from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE CU.CName='MCA';
+
+Select COUNT(*) as Student_Enrolled_for_MBA from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE CU.CName='MBA';
+
+Select SName from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE CU.CName = (Select CName from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE SName='Anita');
+
+Select CName from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE STD.SName='Kunal';
+
+Select STD.RollNo,STD.SName from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE CU.CName='MCA' AND STD.Gender='Male';
+
+Select STD.RollNo,STD.SName from STUDENT STD
+JOIN ENROLLMENT EN ON STD.RollNo = EN.RollNo
+JOIN Course CU ON CU.CID = EN.CID
+WHERE CU.CName='MCA' AND STD.City<>'Delhi';
