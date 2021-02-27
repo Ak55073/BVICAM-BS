@@ -21,5 +21,5 @@
 ### Required 
 -> Ubuntu OS <br />
 
-Discord Server
-https://discord.gg/gG2hjkavQ6
+Discord Server <br />
+![Discord Banner 1](https://discordapp.com/api/guilds/797718135012458518/widget.png?style=banner1)
