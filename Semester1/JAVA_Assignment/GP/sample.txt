@@ -1,0 +1,3 @@
+This is java program
+It is a sample data
+JAVA is not a language in which you program in C++, genius.

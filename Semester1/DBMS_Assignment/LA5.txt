@@ -1,0 +1,108 @@
+CREATE TABLE Acct_Mstr( 
+	AccNum number(10) PRIMARY KEY,
+	Balance number(8)
+);
+
+INSERT INTO Acct_Mstr VALUES(
+1,10000);
+INSERT INTO Acct_Mstr VALUES(
+2,2000);
+INSERT INTO Acct_Mstr VALUES(
+3,500);
+INSERT INTO Acct_Mstr VALUES(
+4,200);
+
+DECLARE
+	Num Acct_Mstr.AccNum%TYPE;
+	bal Acct_Mstr.Balance%TYPE;
+BEGIN
+	Num:=:Num;
+	select Balance INTO bal from Acct_Mstr where  AccNum=Num;
+	
+	IF bal>1000 THEN
+		UPDATE Acct_Mstr SET Balance=bal-200 where AccNum=Num;
+		DBMS_OUTPUT.PUT_LINE('Balance updated');
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('Balance not updated');
+	END IF;
+END;
+
+
+CREATE TABLE Circle_Data( 
+	Radius number(7,2),
+	Area number(7,2)
+);
+
+DECLARE
+	Radius Circle_Data.Radius%TYPE;
+	Area Circle_Data.Area%TYPE;
+BEGIN
+    << main_loop >> 
+	FOR i IN 3..7 LOOP
+        INSERT INTO Circle_Data VALUES(i,(3.14159*i*i));
+    END loop main_loop; 
+    FOR i IN 3..7 LOOP
+        select Radius,Area INTO Radius,Area from Circle_Data where Radius=i;
+        DBMS_OUTPUT.PUT_LINE('Radius ' || Radius || ' Area ' || Area);
+    END loop main_loop;
+END;
+
+
+CREATE TABLE Bank( 
+	AccNum number(10) PRIMARY KEY,
+	Balance number(8)
+);
+INSERT INTO Bank VALUES(1,10000);
+INSERT INTO Bank VALUES(2,20000);
+INSERT INTO Bank VALUES(3,50000);
+INSERT INTO Bank VALUES(4,2320);
+
+DECLARE
+    count_data number(3);
+    Acc_Num Bank.AccNum%TYPE;
+    Current_Balance Bank.Balance%TYPE;
+	Money number(8);
+BEGIN
+	SAVEPOINT starting_transaction;
+    select count(*) INTO count_data from Bank;
+    << main_loop >> 
+	FOR i IN 1..count_data LOOP
+        select AccNum,Balance INTO Acc_Num,Current_Balance from Bank where AccNum=i;
+        DBMS_OUTPUT.PUT_LINE('Acc_Num ' || Acc_Num || ' Current_Balance ' || Current_Balance);
+
+        UPDATE Bank SET Balance=Current_Balance-1500 where AccNum=i;
+		DBMS_OUTPUT.PUT_LINE('Withdraw 1500');
+        select AccNum,Balance INTO Acc_Num,Current_Balance from Bank where AccNum=i;
+        DBMS_OUTPUT.PUT_LINE('Acc_Num ' || Acc_Num || ' Current_Balance ' || Current_Balance);
+
+        UPDATE Bank SET Balance=Current_Balance+50000 where AccNum=i;
+		DBMS_OUTPUT.PUT_LINE('Desposited 50,000');
+        select AccNum,Balance INTO Acc_Num,Current_Balance from Bank where AccNum=i;
+        DBMS_OUTPUT.PUT_LINE('Acc_Num ' || Acc_Num || ' Current_Balance ' || Current_Balance);
+    END loop main_loop;
+	
+	select SUM(Balance) INTO Money from Bank;
+	
+	IF Money>6000000 THEN
+		ROLLBACK WORK TO SAVEPOINT starting_transaction;
+		DBMS_OUTPUT.PUT_LINE('Balance exceeded limit, Reverting Transaction.');
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('Balance updated for all accounts.');
+	END IF;
+END;
+
+
+DECLARE
+	Input number(8);
+	RevInput number(8);
+BEGIN
+	Input:=:Input;
+    RevInput:=0;
+    WHILE Input>0 LOOP
+        RevInput:=(RevInput*10) + mod(Input,10); 
+        Input:=floor(Input/10); 
+    END LOOP; 
+
+    DBMS_OUTPUT.PUT_LINE('Reverse ' || RevInput);
+    
+END;
