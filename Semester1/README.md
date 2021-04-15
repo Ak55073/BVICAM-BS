@@ -4,6 +4,8 @@
 ### Required 
 -> Notepad++ (https://notepad-plus-plus.org/downloads/) <br />
 -> JAVA JDK - Minimum 8.0 (https://www.oracle.com/in/java/technologies/javase-downloads.html) <br />
+-> IDE of your choice. 
+    Personal Recommendation: IntelliJ Community Edition (https://www.jetbrains.com/idea/download/#section=windows)
 ### Commands
 -> javac {filename}.java <br />
 -> java {filename} [List of arguments, separated by space] <br />
@@ -16,6 +18,7 @@
 ## DBMS Assignment
 ### Required 
 -> Oracle Engine (https://livesql.oracle.com/apex/) <br />
+-> PLSQL Workshop (https://apex.oracle.com/pls/apex/f?p=4700:2:1934138956025:::RP::)
 
 ## Linux Assignment
 ### Required 
