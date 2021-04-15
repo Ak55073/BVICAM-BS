@@ -106,3 +106,150 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Reverse ' || RevInput);
     
 END;
+
+CREATE TABLE Accounts( 
+	AccNo number(10) PRIMARY KEY,
+	NameHolder varchar(16),
+	Address varchar(16),
+	PANNo number(12),
+	Mobile number(10),
+	Status varchar(8),
+	balance number(8),
+	lastTransaction DATE
+);
+CREATE TABLE InactiveAccounts( 
+	AccNo number(10) PRIMARY KEY,
+	Balance number(8)
+);
+INSERT INTO Accounts VALUES(1,'Abhinav','Delhi',25475,6348,'Active',9000,TO_DATE('2011/04/22', 'yyyy/mm/dd') );
+INSERT INTO Accounts VALUES(2,'Rahul','Delhi',25475,6348,'Active',90900,TO_DATE('2020/02/19', 'yyyy/mm/dd') );
+INSERT INTO Accounts VALUES(3,'Max','Delhi',25475,6348,'Active',9680,TO_DATE('2020/06/20', 'yyyy/mm/dd') );
+INSERT INTO Accounts VALUES(4,'Lisa','Delhi',25475,6348,'Active',908,TO_DATE('2022/02/21', 'yyyy/mm/dd') );
+DECLARE
+    CURSOR c1 IS SELECT AccNo, NameHolder, lastTransaction, Balance, Status FROM Accounts WHERE SYSDATE-lastTransaction>180;
+BEGIN
+    FOR row_c1 IN c1
+    LOOP
+        UPDATE Accounts SET Status = 'Inactive' WHERE accno=row_c1.accno;
+        INSERT INTO InactiveAccounts(accno,  Balance) VALUES(row_c1.accno, row_c1.balance);
+    END LOOP;
+END;
+SELECT * FROM Accounts;
+SELECT * FROM InactiveAccounts;
+
+DECLARE
+	updateNum number(8);
+	count_data number(3);
+	balance number(8);
+	city varchar(16);
+	CURSOR c1 IS SELECT AccNo, Address, balance Status FROM Accounts WHERE Address='Delhi';
+BEGIN
+	updateNum:=0;
+	select count(*) INTO count_data from Accounts;
+	FOR row_c1 IN c1 LOOP
+		UPDATE Accounts SET Balance = Balance+100 WHERE AccNo=row_c1.AccNo;
+		updateNum:=updateNum+1;
+    END loop;
+	DBMS_OUTPUT.PUT_LINE('Records Updated: ' || updateNum);
+END;
+
+CREATE TABLE EMPLOYEE( 
+    EMPName varchar(16),
+    DateOfBirth DATE,
+    Designation varchar(16),
+    Salary number(7,2)
+);
+
+INSERT INTO EMPLOYEE VALUES(
+'Abhinav', TO_DATE('2022/06/26', 'yyyy/mm/dd'),'CEO',9000);
+INSERT INTO EMPLOYEE VALUES(
+'Afssfav', TO_DATE('2022/06/26', 'yyyy/mm/dd'),'CEO',9000);
+INSERT INTO EMPLOYEE VALUES(
+'Adav', TO_DATE('2022/06/26', 'yyyy/mm/dd'),'CEO',9000);
+
+DECLARE
+	CURSOR c1 IS SELECT EMPName, DateOfBirth, Designation FROM EMPLOYEE WHERE Salary>15000;
+    count_item number(3);
+BEGIN
+    count_item:=0;
+	FOR row_c1 IN c1 LOOP
+        count_item:=count_item+1;
+        DBMS_OUTPUT.PUT_LINE('EMPLOYEE: ' || row_c1.EMPName || ' ' || row_c1.DateOfBirth || ' ' || row_c1.Designation);
+    END loop;
+    IF count_item=0 THEN
+        raise_application_error(-20001,' ');
+    END IF;
+EXCEPTION 
+   WHEN others THEN
+      DBMS_OUTPUT.PUT_LINE('No emp with salary higer then 15000');
+END;
+
+// TRIGGER
+CREATE TABLE EMPLOYEE_MASTER( 
+    EMPID number(8),
+    EMPName varchar(16)
+);
+
+CREATE TABLE EMPLOYEE_BACKUP( 
+    EMPID number(8),
+    EMPName varchar(16)
+);
+
+INSERT INTO EMPLOYEE_MASTER VALUES(1,'Abhinav');
+INSERT INTO EMPLOYEE_MASTER VALUES(2,'Kumar');
+
+CREATE OR REPLACE TRIGGER Data_Backup 
+BEFORE 
+    DELETE OR UPDATE 
+ON EMPLOYEE_MASTER
+FOR EACH ROW
+BEGIN
+    CASE
+        WHEN UPDATING THEN
+            INSERT INTO EMPLOYEE_BACKUP VALUES(:OLD.EMPID, :OLD.EMPName);
+        WHEN DELETING THEN
+            INSERT INTO EMPLOYEE_BACKUP VALUES(:OLD.EMPID, :OLD.EMPName);
+    END CASE; 
+END;
+
+UPDATE EMPLOYEE_MASTER SET EMPName = 'Master' WHERE EMPID=1;
+DELETE FROM EMPLOYEE_MASTER WHERE EMPID <> 1;
+select * from EMPLOYEE_MASTER;
+select * from employee_backup;
+
+DROP TABLE EMPLOYEE_MASTER;
+CREATE TABLE EMPLOYEE_MASTER( 
+    EMPID number(8),
+    EMPName varchar(16)
+);
+
+CREATE TABLE EMPLOYEE_BACKUP_MASTER( 
+    EMPID number(8),
+    EMPName varchar(16)
+);
+
+CREATE OR REPLACE TRIGGER Data_Deleter
+BEFORE 
+    INSERT OR 
+    UPDATE OF EMPID, EMPName OR
+    DELETE
+ON EMPLOYEE_MASTER
+FOR EACH ROW
+BEGIN
+    CASE
+        WHEN INSERTING THEN
+            INSERT INTO EMPLOYEE_BACKUP_MASTER VALUES(:NEW.EMPID, :NEW.EMPName);
+        WHEN UPDATING('EMPID') THEN
+            UPDATE EMPLOYEE_BACKUP_MASTER SET EMPID = :NEW.EMPID WHERE EMPID= :OLD.EMPID;
+        WHEN UPDATING('EMPName') THEN
+            UPDATE EMPLOYEE_BACKUP_MASTER SET EMPName = :NEW.EMPName WHERE EMPName= :OLD.EMPName;
+        WHEN DELETING THEN
+            DELETE FROM EMPLOYEE_BACKUP_MASTER WHERE EMPName= :OLD.EMPName;
+    END CASE; 
+END;
+
+INSERT INTO EMPLOYEE_MASTER VALUES(1,'Abhinav');
+INSERT INTO EMPLOYEE_MASTER VALUES(2,'Kumar');
+UPDATE EMPLOYEE_MASTER SET EMPID = 11 WHERE EMPID = 1;
+DELETE FROM EMPLOYEE_MASTER WHERE EMPID= 2;
+select * from EMPLOYEE_BACKUP_MASTER;
