@@ -1,6 +1,5 @@
-if __name__ == '__main__':
-    x = lambda num: num if (num % 7 == 0 and num % 5 != 0) else None
-    for i in range(1000, 2000):
-        val = x(i)
-        if val:
-            print(val)
+def reverse_list(num_list):
+    return [num_list[i] for i in range(len(num_list) - 1, -1, -1)]
+
+
+print(reverse_list([5, 4, 3, 2, 5, 6, 7]))
