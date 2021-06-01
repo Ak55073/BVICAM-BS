@@ -11,4 +11,4 @@ def count_characters(text):
     print(data)
 
 
-count_characters("This is some random text")
+count_characters("This is some random text by Abhinav Kumar")

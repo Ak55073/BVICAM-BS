@@ -9,4 +9,5 @@ def fibonacci(limit, i, j, final):
 
 
 if __name__ == '__main__':
-    print("Sum of fibonacci number:", fibonacci(limit=1000, i=0, j=1, final=0))
+    print("Sum of fibonacci number:",
+          fibonacci(limit=1000, i=0, j=1, final=0))
