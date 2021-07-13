@@ -1,20 +1,15 @@
-from math import pi
+class StringManage:
+    def __init__(self):
+        self.text = ""
 
+    def set_string(self):
+        self.text = input("Enter a string: ")
 
-class Circle:
-    radius = 0
-
-    def __init__(self, radius):
-        self.radius = radius
-
-    def get_area(self):
-        return pi * (self.radius ** 2)
-
-    def get_perimeter(self):
-        return 2 * pi * self.radius
+    def get_string(self):
+        return self.text.upper()
 
 
 if __name__ == '__main__':
-    circle = Circle(5)
-    print(circle.get_area())
-    print(circle.get_perimeter())
+    manager = StringManage()
+    manager.set_string()
+    print(manager.get_string())

@@ -3,7 +3,6 @@ def count_characters(text):
     for i in text:
         if i == " ":
             continue
-
         if i in data.keys():
             data[i] += 1
         else:
@@ -11,4 +10,6 @@ def count_characters(text):
     print(data)
 
 
-count_characters("This is some random text by Abhinav Kumar")
+if __name__ == "__main__":
+    string_data = "This is some random text by Abhinav Kumar"
+    count_characters(string_data)
